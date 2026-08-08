@@ -1,520 +1,578 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Companion Vault</title>
-    <style>
-        :root {
-            --bg-dark: #090d16;
-            --card-bg: #111827;
-            --card-border: #1f293d;
-            --primary-green: #10b981;
-            --accent-cyan: #06b6d4;
-            --accent-purple: #a855f7;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Companion Hub</title>
+  <style>
+    :root {
+      --bg-dark: #0a0c10;
+      --card-bg: rgba(22, 27, 34, 0.85);
+      --accent-green: #10b981;
+      --accent-cyan: #06b6d4;
+      --accent-purple: #8b5cf6;
+      --accent-gold: #f59e0b;
+      --accent-red: #ef4444;
+      --text-light: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border-color: #30363d;
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: system-ui, -apple-system, sans-serif;
-            padding: 16px;
-            max-width: 480px;
-            margin: 0 auto;
-        }
+    body {
+      background: radial-gradient(circle at top, #161b22 0%, var(--bg-dark) 100%);
+      color: var(--text-light);
+      min-height: 100vh;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+    }
 
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        header h1 {
-            color: var(--primary-green);
-            font-size: 24px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        header p { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
+    .container {
+      width: 100%;
+      max-width: 600px;
+    }
 
-        /* Navigation Tabs */
-        .tab-menu {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 16px;
-            background: #111827;
-            padding: 4px;
-            border-radius: 12px;
-            border: 1px solid var(--card-border);
-        }
-        .tab-btn {
-            flex: 1;
-            padding: 10px 2px;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            font-weight: 700;
-            font-size: 10px;
-            text-transform: uppercase;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .tab-btn.active {
-            background: var(--primary-green);
-            color: #000;
-        }
+    /* Animated Header */
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+    .logo-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-        /* Cards & Form Elements */
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-        .card h2 {
-            font-size: 15px;
-            color: var(--accent-cyan);
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
+    .status-badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 4px 14px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border-radius: 20px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--accent-green);
+      border: 1px solid var(--accent-green);
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
-        
-        label { 
-            display: block; 
-            font-size: 10px; 
-            font-weight: 700;
-            color: var(--text-muted); 
-            text-transform: uppercase;
-            margin-bottom: 4px; 
-        }
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 6px rgba(16, 185, 129, 0.2);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 0 16px rgba(16, 185, 129, 0.6);
+        transform: scale(1.02);
+      }
+    }
 
-        input, select {
-            width: 100%;
-            padding: 10px;
-            background: #090d16;
-            border: 1px solid var(--card-border);
-            border-radius: 8px;
-            color: var(--text-main);
-            font-size: 13px;
-            margin-bottom: 10px;
-            outline: none;
-        }
+    /* Horizontal Scrollable Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 20px;
+      scrollbar-width: none;
+    }
 
-        .btn-action {
-            width: 100%;
-            background: var(--primary-green);
-            color: #000;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 800;
-            font-size: 12px;
-            text-transform: uppercase;
-            cursor: pointer;
-            margin-top: 4px;
-        }
+    .tabs-nav::-webkit-scrollbar {
+      display: none;
+    }
 
-        .output-box {
-            background: #090d16;
-            border: 1px solid var(--accent-cyan);
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 10px;
-            text-align: center;
-        }
-        .output-title { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
-        .output-value { 
-            font-size: 16px; 
-            font-weight: 800; 
-            color: var(--accent-cyan); 
-            margin-top: 2px;
-        }
-        
-        .code-block {
-            background: #000;
-            border: 1px solid var(--primary-green);
-            border-radius: 8px;
-            padding: 10px;
-            font-family: monospace;
-            font-size: 11px;
-            color: #a7f3d0;
-            word-break: break-all;
-            margin-top: 8px;
-        }
+    .tab-btn {
+      flex: 0 0 auto;
+      padding: 10px 14px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-        .waypoint-item {
-            background: #090d16;
-            border: 1px solid var(--card-border);
-            border-radius: 8px;
-            padding: 8px 12px;
-            margin-top: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .wp-title { font-weight: bold; color: var(--primary-green); font-size: 12px; }
-        .wp-coords { font-size: 11px; color: var(--text-muted); }
-        .btn-del {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-            border: 1px solid #ef4444;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            cursor: pointer;
-        }
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--accent-green), #059669);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+    }
 
-        /* XP List Stats */
-        .xp-stat-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-top: 10px;
-        }
-        .xp-stat-item {
-            background: #090d16;
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid var(--card-border);
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-        }
-        .xp-stat-item span:last-child {
-            color: var(--primary-green);
-            font-weight: bold;
-        }
-    </style>
+    /* Content Slide-Up Animation */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: slideUp 0.4s ease forwards;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-green);
+      box-shadow: 0 8px 22px rgba(16, 185, 129, 0.2);
+    }
+
+    .card h2 {
+      font-size: 1.15rem;
+      color: var(--accent-cyan);
+      margin-bottom: 14px;
+    }
+
+    /* Form Controls */
+    label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      background: rgba(10, 12, 16, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      color: #fff;
+      margin-bottom: 14px;
+      outline: none;
+      transition: border 0.3s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent-green);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .btn-main {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-main:active {
+      transform: scale(0.97);
+    }
+
+    /* XP Progress Bar & Results */
+    .xp-bar-container {
+      width: 100%;
+      height: 14px;
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 14px 0;
+    }
+
+    .xp-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #10b981, #84cc16);
+      box-shadow: 0 0 10px #84cc16;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .xp-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .xp-stat-card {
+      background: #0d1117;
+      border: 1px solid var(--border-color);
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+    }
+
+    .xp-stat-card span {
+      display: block;
+      color: var(--accent-gold);
+      font-weight: bold;
+      font-size: 0.95rem;
+      margin-top: 2px;
+    }
+
+    /* Output Boxes */
+    .output-box {
+      margin-top: 14px;
+      padding: 12px;
+      background: #0d1117;
+      border: 1px dashed var(--accent-green);
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      color: var(--accent-green);
+      word-break: break-all;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .copy-btn {
+      background: var(--border-color);
+      border: none;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-purple);
+    }
+  </style>
 </head>
 <body>
 
+  <div class="container">
     <header>
-        <h1>Minecraft Vault ⚡</h1>
-        <p>Companion Tool Suite</p>
+      <div class="logo-title">🎮 MC COMPANION HUB</div>
+      <div class="status-badge">⚡ ADVANCED XP CALCULATOR</div>
     </header>
 
     <!-- Navigation Tabs -->
-    <div class="tab-menu">
-        <button class="tab-btn active" data-tab="portal">🌌 Nether</button>
-        <button class="tab-btn" data-tab="distance">📏 3D Dist</button>
-        <button class="tab-btn" data-tab="xp">🔮 XP Calc</button>
-        <button class="tab-btn" data-tab="commands">⚔️ Cmds</button>
-        <button class="tab-btn" data-tab="waypoints">📌 Saved</button>
+    <div class="tabs-nav">
+      <button class="tab-btn" onclick="switchTab('giveTab', this)">Give Command</button>
+      <button class="tab-btn active" onclick="switchTab('xpTab', this)">XP Calculator</button>
+      <button class="tab-btn" onclick="switchTab('coordsTab', this)">Nether Coords</button>
+      <button class="tab-btn" onclick="switchTab('spawnerTab', this)">Mob Spawner</button>
+      <button class="tab-btn" onclick="switchTab('effectTab', this)">Effects</button>
+      <button class="tab-btn" onclick="switchTab('colorTab', this)">Color Codes</button>
     </div>
 
-    <!-- TAB 1: NETHER PORTAL -->
-    <div id="tab-portal" class="tab-content active">
-        <div class="card">
-            <h2>🌌 Nether Portal Calc</h2>
-            <label>Mode Select Karo:</label>
-            <select id="portalMode">
-                <option value="o2n">Overworld ➔ Nether (/ 8)</option>
-                <option value="n2o">Nether ➔ Overworld (* 8)</option>
-            </select>
+    <!-- TAB 1: GIVE COMMAND -->
+    <div id="giveTab" class="tab-content">
+      <div class="card">
+        <h2>🗡️ Enchanted Item Generator</h2>
+        
+        <label>Select Item</label>
+        <select id="itemSelect">
+          <option value="netherite_sword">Netherite Sword</option>
+          <option value="diamond_pickaxe">Diamond Pickaxe</option>
+          <option value="netherite_chestplate">Netherite Chestplate</option>
+          <option value="bow">Bow</option>
+          <option value="enchanted_book">Enchanted Book</option>
+        </select>
 
-            <div class="grid-3">
-                <div>
-                    <label>X Coord</label>
-                    <input type="number" id="px" value="800">
-                </div>
-                <div>
-                    <label>Y (Height)</label>
-                    <input type="number" id="py" value="64">
-                </div>
-                <div>
-                    <label>Z Coord</label>
-                    <input type="number" id="pz" value="-1200">
-                </div>
-            </div>
+        <label>Enchantment Level</label>
+        <input type="number" id="enchLevel" value="255" placeholder="Enter Level (e.g. 255)">
 
-            <div class="output-box">
-                <div class="output-title" id="portalOutLabel">Target Nether Coordinates</div>
-                <div class="output-value" id="portalResult">X: 100, Y: 64, Z: -150</div>
-            </div>
+        <button class="btn-main" onclick="generateGiveCommand()">Generate Command</button>
 
-            <input type="text" id="wpNameInput" placeholder="Base Name (e.g. Main Base)" style="margin-top:10px; margin-bottom:6px;">
-            <button class="btn-action" id="btnSaveWp">📌 Save Waypoint</button>
+        <div class="output-box">
+          <span id="giveCmdText">/give @p netherite_sword{Enchantments:[{id:"sharpness",lvl:255}]} 1</span>
+          <button class="copy-btn" onclick="copyCode('giveCmdText')">Copy</button>
         </div>
+      </div>
     </div>
 
-    <!-- TAB 2: DISTANCE -->
-    <div id="tab-distance" class="tab-content">
-        <div class="card">
-            <h2>📏 3D Distance Calc</h2>
-            <label>Point A:</label>
-            <div class="grid-3">
-                <input type="number" id="aX" placeholder="X" value="0">
-                <input type="number" id="aY" placeholder="Y" value="64">
-                <input type="number" id="aZ" placeholder="Z" value="0">
-            </div>
-
-            <label>Point B:</label>
-            <div class="grid-3">
-                <input type="number" id="bX" placeholder="X" value="300">
-                <input type="number" id="bY" placeholder="Y" value="70">
-                <input type="number" id="bZ" placeholder="Z" value="400">
-            </div>
-
-            <div class="output-box">
-                <div class="output-title">3D Distance</div>
-                <div class="output-value" id="distanceResult">500.04 Blocks</div>
-            </div>
-
-            <div class="output-box" style="margin-top:6px;">
-                <div class="output-title">Point B Chunk</div>
-                <div class="output-value" id="chunkResult" style="font-size:14px;">Chunk X: 18, Chunk Z: 25</div>
-            </div>
+    <!-- TAB 2: ADVANCED XP CALCULATOR -->
+    <div id="xpTab" class="tab-content active">
+      <div class="card">
+        <h2>✨ Advanced XP & Mob Farm Calculator</h2>
+        
+        <div class="grid-2">
+          <div>
+            <label>Current Level</label>
+            <input type="number" id="currentLvl" value="0" placeholder="e.g. 0">
+          </div>
+          <div>
+            <label>Target Level</label>
+            <input type="number" id="targetLvl" value="30" placeholder="e.g. 30">
+          </div>
         </div>
-    </div>
 
-    <!-- TAB 3: XP CALCULATOR -->
-    <div id="tab-xp" class="tab-content">
-        <div class="card">
-            <h2>🔮 XP & Level Calculator</h2>
-            <div class="grid-2">
-                <div>
-                    <label>Current Level</label>
-                    <input type="number" id="xpCurrent" value="0" min="0">
-                </div>
-                <div>
-                    <label>Target Level</label>
-                    <input type="number" id="xpTarget" value="30" min="1">
-                </div>
-            </div>
+        <button class="btn-main" onclick="calculateXP()">Calculate XP & Resources Needed</button>
 
-            <div class="output-box" style="border-color: var(--accent-purple);">
-                <div class="output-title" style="color: var(--accent-purple);">Required XP Points</div>
-                <div class="output-value" id="xpRequiredResult" style="color: var(--accent-purple);">1,395 XP</div>
-            </div>
-
-            <div class="xp-stat-list">
-                <div class="xp-stat-item">
-                    <span>Endermen Kills (5 XP/mob):</span>
-                    <span id="xpEndermen">279</span>
-                </div>
-                <div class="xp-stat-item">
-                    <span>Blazes / Piglins (10 XP/mob):</span>
-                    <span id="xpBlazes">140</span>
-                </div>
-                <div class="xp-stat-item">
-                    <span>Overworld Mobs (5 XP/mob):</span>
-                    <span id="xpMobs">279</span>
-                </div>
-                <div class="xp-stat-item">
-                    <span>Quartz Ores Mined (~3.5 XP):</span>
-                    <span id="xpQuartz">399</span>
-                </div>
-            </div>
+        <!-- Animated Progress Bar -->
+        <div class="xp-bar-container">
+          <div class="xp-bar-fill" id="xpBarFill"></div>
         </div>
-    </div>
 
-    <!-- TAB 4: COMMANDS -->
-    <div id="tab-commands" class="tab-content">
-        <div class="card">
-            <h2>⚔️ Command Generator</h2>
-            <label>Item Type:</label>
-            <select id="itemSelect">
-                <option value="netherite_sword">Netherite Sword 🗡️</option>
-                <option value="netherite_pickaxe">Netherite Pickaxe ⛏️</option>
-                <option value="netherite_chestplate">God Chestplate 🛡️</option>
-                <option value="trident">OP Trident 🔱</option>
-                <option value="bow">God Bow 🏹</option>
-            </select>
+        <div id="xpResults" style="display:none;">
+          <div class="output-box" style="color: var(--accent-green); margin-bottom: 12px;">
+            <span id="xpSummaryText">XP Orbs Needed: 1,395</span>
+          </div>
 
-            <label>Custom Name:</label>
-            <input type="text" id="itemName" value="Glacier God Blade">
-
-            <label>Enchantment Level:</label>
-            <select id="enchLevel">
-                <option value="255">Level 255 (MAX)</option>
-                <option value="100">Level 100</option>
-                <option value="10">Level 10</option>
-            </select>
-
-            <div class="code-block" id="commandOutput">/give @p netherite_sword...</div>
-            <button class="btn-action" id="btnCopyCmd">📋 Copy Command</button>
+          <label>Equivalent Farm Targets:</label>
+          <div class="xp-stats-grid">
+            <div class="xp-stat-card">🧟 Zombies / Skeletons <span id="mobsQty">279</span></div>
+            <div class="xp-stat-card">🔥 Blazes <span id="blazeQty">140</span></div>
+            <div class="xp-stat-card">⛏️ Quartz Ores <span id="quartzQty">399</span></div>
+            <div class="xp-stat-card">🧪 Bottles o' Enchanting <span id="bottlesQty">200</span></div>
+          </div>
         </div>
+      </div>
     </div>
 
-    <!-- TAB 5: SAVED -->
-    <div id="tab-waypoints" class="tab-content">
-        <div class="card">
-            <h2>📌 Saved Coordinates</h2>
-            <div id="waypointsList"></div>
+    <!-- TAB 3: NETHER COORDS CALCULATOR -->
+    <div id="coordsTab" class="tab-content">
+      <div class="card">
+        <h2>🌐 Nether ⇄ Overworld Calculator</h2>
+
+        <label>Conversion Mode</label>
+        <select id="coordMode">
+          <option value="owToNether">Overworld ➔ Nether (÷ 8)</option>
+          <option value="netherToOw">Nether ➔ Overworld (× 8)</option>
+        </select>
+
+        <label>Coordinates (X, Y, Z)</label>
+        <div class="grid-3">
+          <input type="number" id="coordX" placeholder="X" value="800">
+          <input type="number" id="coordY" placeholder="Y" value="64">
+          <input type="number" id="coordZ" placeholder="Z" value="-1600">
         </div>
+
+        <button class="btn-main" onclick="calculateCoords()">Calculate Coordinates</button>
+
+        <div class="output-box" id="coordsResultBox" style="color: var(--accent-cyan);">
+          <span id="coordsResultText">Nether Coords: X: 100 | Y: 64 | Z: -200</span>
+        </div>
+      </div>
     </div>
 
-    <script>
-        // Tab switching logic
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
+    <!-- TAB 4: MOB SPAWNER -->
+    <div id="spawnerTab" class="tab-content">
+      <div class="card">
+        <h2>🧟 Custom Mob Spawner Generator</h2>
 
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const targetTab = btn.getAttribute('data-tab');
+        <label>Select Mob</label>
+        <select id="mobSelect">
+          <option value="zombie">Zombie</option>
+          <option value="skeleton">Skeleton</option>
+          <option value="creeper">Creeper</option>
+          <option value="blaze">Blaze</option>
+          <option value="ender_dragon">Ender Dragon</option>
+        </select>
 
-                tabBtns.forEach(b => b.classList.remove('active'));
-                tabContents.forEach(c => c.classList.remove('active'));
+        <button class="btn-main" onclick="generateSpawnerCommand()">Generate Spawner</button>
 
-                btn.classList.add('active');
-                document.getElementById('tab-' + targetTab).classList.add('active');
+        <div class="output-box">
+          <span id="spawnerCmdText">/setblock ~ ~ ~ spawner{SpawnData:{entity:{id:"zombie"}}}</span>
+          <button class="copy-btn" onclick="copyCode('spawnerCmdText')">Copy</button>
+        </div>
+      </div>
+    </div>
 
-                if(targetTab === 'waypoints') renderWaypoints();
-            });
-        });
+    <!-- TAB 5: EFFECT COMMANDS -->
+    <div id="effectTab" class="tab-content">
+      <div class="card">
+        <h2>🧪 Status Effect Generator</h2>
 
-        // Nether Portal
-        function calcPortal() {
-            const mode = document.getElementById('portalMode').value;
-            const x = parseFloat(document.getElementById('px').value) || 0;
-            const y = parseFloat(document.getElementById('py').value) || 0;
-            const z = parseFloat(document.getElementById('pz').value) || 0;
+        <label>Choose Effect</label>
+        <select id="effectSelect">
+          <option value="strength">Strength</option>
+          <option value="speed">Speed</option>
+          <option value="regeneration">Regeneration</option>
+          <option value="invisibility">Invisibility</option>
+          <option value="night_vision">Night Vision</option>
+        </select>
 
-            let rx = (mode === 'o2n') ? Math.floor(x / 8) : Math.floor(x * 8);
-            let rz = (mode === 'o2n') ? Math.floor(z / 8) : Math.floor(z * 8);
+        <label>Duration (Seconds)</label>
+        <input type="number" id="effDuration" value="99999">
 
-            document.getElementById('portalOutLabel').innerText = (mode === 'o2n') ? "Target Nether Coordinates" : "Target Overworld Coordinates";
-            document.getElementById('portalResult').innerText = `X: ${rx}, Y: ${y}, Z: ${rz}`;
-        }
+        <label>Amplifier (Level)</label>
+        <input type="number" id="effAmp" value="255">
 
-        ['portalMode', 'px', 'py', 'pz'].forEach(id => {
-            document.getElementById(id).addEventListener('input', calcPortal);
-            document.getElementById(id).addEventListener('change', calcPortal);
-        });
+        <button class="btn-main" onclick="generateEffectCommand()">Generate Effect</button>
 
-        // Distance
-        function calcDistance() {
-            const ax = parseFloat(document.getElementById('aX').value) || 0;
-            const ay = parseFloat(document.getElementById('aY').value) || 0;
-            const az = parseFloat(document.getElementById('aZ').value) || 0;
+        <div class="output-box">
+          <span id="effCmdText">/effect give @p strength 99999 255 true</span>
+          <button class="copy-btn" onclick="copyCode('effCmdText')">Copy</button>
+        </div>
+      </div>
+    </div>
 
-            const bx = parseFloat(document.getElementById('bX').value) || 0;
-            const by = parseFloat(document.getElementById('bY').value) || 0;
-            const bz = parseFloat(document.getElementById('bZ').value) || 0;
+    <!-- TAB 6: COLOR CODES -->
+    <div id="colorTab" class="tab-content">
+      <div class="card">
+        <h2>🎨 Color & Formatting Codes</h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.85rem;">
+          <div style="color: #ef4444;">&c - Red</div>
+          <div style="color: #3b82f6;">&9 - Blue</div>
+          <div style="color: #10b981;">&a - Green</div>
+          <div style="color: #eab308;">&e - Yellow</div>
+          <div style="color: #a855f7;">&d - Pink</div>
+          <div style="color: #06b6d4;">&b - Aqua</div>
+          <div><strong>&l - Bold</strong></div>
+          <div><em>&o - Italic</em></div>
+        </div>
+      </div>
+    </div>
 
-            const dist = Math.sqrt(Math.pow(bx - ax, 2) + Math.pow(by - ay, 2) + Math.pow(bz - az, 2));
-            document.getElementById('distanceResult').innerText = `${dist.toFixed(2)} Blocks`;
+  </div>
 
-            document.getElementById('chunkResult').innerText = `Chunk X: ${Math.floor(bx / 16)}, Chunk Z: ${Math.floor(bz / 16)}`;
-        }
+  <script>
+    // Tab Navigation
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
-        ['aX', 'aY', 'aZ', 'bX', 'bY', 'bZ'].forEach(id => {
-            document.getElementById(id).addEventListener('input', calcDistance);
-        });
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+    }
 
-        // XP Calculator Logic
-        function totalXpForLevel(lvl) {
-            if (lvl <= 0) return 0;
-            if (lvl <= 16) return Math.pow(lvl, 2) + (6 * lvl);
-            if (lvl <= 31) return (2.5 * Math.pow(lvl, 2)) - (40.5 * lvl) + 360;
-            return (4.5 * Math.pow(lvl, 2)) - (162.5 * lvl) + 2220;
-        }
+    // 1. Give Command
+    function generateGiveCommand() {
+      const item = document.getElementById('itemSelect').value;
+      const lvl = document.getElementById('enchLevel').value || 1;
+      let ench = "sharpness";
+      if(item.includes("pickaxe")) ench = "efficiency";
+      if(item.includes("chestplate")) ench = "protection";
 
-        function calcXP() {
-            const currentLvl = parseInt(document.getElementById('xpCurrent').value) || 0;
-            const targetLvl = parseInt(document.getElementById('xpTarget').value) || 0;
+      const cmd = `/give @p ${item}{Enchantments:[{id:"${ench}",lvl:${lvl}}]} 1`;
+      document.getElementById('giveCmdText').innerText = cmd;
+    }
 
-            if (targetLvl <= currentLvl) {
-                document.getElementById('xpRequiredResult').innerText = "0 XP";
-                document.getElementById('xpEndermen').innerText = "0";
-                document.getElementById('xpBlazes').innerText = "0";
-                document.getElementById('xpMobs').innerText = "0";
-                document.getElementById('xpQuartz').innerText = "0";
-                return;
-            }
+    // Helper for Level to Total XP Formula
+    function levelToTotalXP(L) {
+      if (L <= 0) return 0;
+      if (L <= 16) return (L * L) + (6 * L);
+      if (L <= 31) return (2.5 * L * L) - (40.5 * L) + 360;
+      return (4.5 * L * L) - (162.5 * L) + 2220;
+    }
 
-            const currentXP = totalXpForLevel(currentLvl);
-            const targetXP = totalXpForLevel(targetLvl);
-            const reqXP = Math.ceil(targetXP - currentXP);
+    // 2. Advanced XP Logic
+    function calculateXP() {
+      const curLvl = Math.max(0, parseInt(document.getElementById('currentLvl').value) || 0);
+      const tarLvl = Math.max(0, parseInt(document.getElementById('targetLvl').value) || 0);
 
-            document.getElementById('xpRequiredResult').innerText = `${reqXP.toLocaleString()} XP`;
-            document.getElementById('xpEndermen').innerText = Math.ceil(reqXP / 5).toLocaleString();
-            document.getElementById('xpBlazes').innerText = Math.ceil(reqXP / 10).toLocaleString();
-            document.getElementById('xpMobs').innerText = Math.ceil(reqXP / 5).toLocaleString();
-            document.getElementById('xpQuartz').innerText = Math.ceil(reqXP / 3.5).toLocaleString();
-        }
+      if (tarLvl <= curLvl) {
+        alert("Target level should be greater than Current level!");
+        return;
+      }
 
-        ['xpCurrent', 'xpTarget'].forEach(id => {
-            document.getElementById(id).addEventListener('input', calcXP);
-        });
+      const curXP = levelToTotalXP(curLvl);
+      const tarXP = levelToTotalXP(tarLvl);
+      const diffXP = Math.floor(tarXP - curXP);
 
-        // Commands
-        function generateCommand() {
-            const item = document.getElementById('itemSelect').value;
-            const name = document.getElementById('itemName').value || "God Item";
-            const lvl = document.getElementById('enchLevel').value;
+      // Animate XP bar
+      const xpBar = document.getElementById('xpBarFill');
+      xpBar.style.width = '0%';
+      setTimeout(() => {
+        xpBar.style.width = '100%';
+      }, 50);
 
-            let enchants = `{id:"sharpness",lvl:${lvl}s},{id:"unbreaking",lvl:${lvl}s}`;
-            if (item.includes("pickaxe")) enchants = `{id:"efficiency",lvl:${lvl}s},{id:"unbreaking",lvl:${lvl}s}`;
-            if (item.includes("chestplate")) enchants = `{id:"protection",lvl:${lvl}s},{id:"unbreaking",lvl:${lvl}s}`;
+      // Update UI Stats
+      document.getElementById('xpResults').style.display = 'block';
+      document.getElementById('xpSummaryText').innerText = `Level ${curLvl} ➔ ${tarLvl} Requires: ${diffXP.toLocaleString()} XP Orbs`;
 
-            const cmd = `/give @p ${item}{CustomName:'{"text":"${name}","color":"gold"}',Enchantments:[${enchants}],Unbreakable:1b} 1`;
-            document.getElementById('commandOutput').innerText = cmd;
-        }
+      document.getElementById('mobsQty').innerText = Math.ceil(diffXP / 5) + " mobs";
+      document.getElementById('blazeQty').innerText = Math.ceil(diffXP / 10) + " blazes";
+      document.getElementById('quartzQty').innerText = Math.ceil(diffXP / 3.5) + " ores";
+      document.getElementById('bottlesQty').innerText = Math.ceil(diffXP / 7) + " bottles";
+    }
 
-        ['itemSelect', 'itemName', 'enchLevel'].forEach(id => {
-            document.getElementById(id).addEventListener('input', generateCommand);
-            document.getElementById(id).addEventListener('change', generateCommand);
-        });
+    // 3. Nether Coords
+    function calculateCoords() {
+      const mode = document.getElementById('coordMode').value;
+      const x = parseFloat(document.getElementById('coordX').value) || 0;
+      const y = document.getElementById('coordY').value || 64;
+      const z = parseFloat(document.getElementById('coordZ').value) || 0;
 
-        document.getElementById('btnCopyCmd').addEventListener('click', () => {
-            const cmd = document.getElementById('commandOutput').innerText;
-            navigator.clipboard.writeText(cmd);
-            alert("Command Copied!");
-        });
+      let resX, resZ, label;
 
-        // Waypoints
-        let waypoints = JSON.parse(localStorage.getItem('mc_wp_simple')) || [];
+      if (mode === 'owToNether') {
+        resX = Math.round(x / 8);
+        resZ = Math.round(z / 8);
+        label = "Nether Coords";
+      } else {
+        resX = Math.round(x * 8);
+        resZ = Math.round(z * 8);
+        label = "Overworld Coords";
+      }
 
-        document.getElementById('btnSaveWp').addEventListener('click', () => {
-            const name = document.getElementById('wpNameInput').value.trim() || "Saved Base";
-            const coords = document.getElementById('portalResult').innerText;
+      document.getElementById('coordsResultText').innerText = `${label}: X: ${resX} | Y: ${y} | Z: ${resZ}`;
+    }
 
-            waypoints.unshift({ id: Date.now(), name: name, coords: coords });
-            localStorage.setItem('mc_wp_simple', JSON.stringify(waypoints));
-            document.getElementById('wpNameInput').value = "";
-            alert("Waypoint Saved!");
-        });
+    // 4. Mob Spawner
+    function generateSpawnerCommand() {
+      const mob = document.getElementById('mobSelect').value;
+      const cmd = `/setblock ~ ~ ~ spawner{SpawnData:{entity:{id:"${mob}"}}}`;
+      document.getElementById('spawnerCmdText').innerText = cmd;
+    }
 
-        function renderWaypoints() {
-            const list = document.getElementById('waypointsList');
-            if (waypoints.length === 0) {
-                list.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:11px;">Koi waypoint saved nahi hai.</p>`;
-                return;
-            }
+    // 5. Effect Command
+    function generateEffectCommand() {
+      const eff = document.getElementById('effectSelect').value;
+      const dur = document.getElementById('effDuration').value || 30;
+      const amp = document.getElementById('effAmp').value || 1;
 
-            list.innerHTML = waypoints.map(w => `
-                <div class="waypoint-item">
-                    <div>
-                        <div class="wp-title">${w.name}</div>
-                        <div class="wp-coords">${w.coords}</div>
-                    </div>
-                    <button class="btn-del" onclick="deleteWaypoint(${w.id})">Delete</button>
-                </div>
-            `).join('');
-        }
+      const cmd = `/effect give @p ${eff} ${dur} ${amp} true`;
+      document.getElementById('effCmdText').innerText = cmd;
+    }
 
-        window.deleteWaypoint = function(id) {
-            waypoints = waypoints.filter(w => w.id !== id);
-            localStorage.setItem('mc_wp_simple', JSON.stringify(waypoints));
-            renderWaypoints();
-        };
-
-        // Initialize
-        calcPortal();
-        calcDistance();
-        calcXP();
-        generateCommand();
-    </script>
+    // Copy Tool
+    function copyCode(elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Copied to Clipboard!");
+      });
+    }
+  </script>
 </body>
 </html>
-
