@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Companion Vault - GOD EDITION ⚡</title>
+    <title>Minecraft Companion Vault</title>
     <style>
         :root {
-            --bg-dark: #04070d;
-            --card-bg: rgba(13, 20, 36, 0.75);
-            --card-border: rgba(16, 185, 129, 0.3);
+            --bg-dark: #090d16;
+            --card-bg: #111827;
+            --card-border: #1f293d;
             --primary-green: #10b981;
-            --primary-green-glow: rgba(16, 185, 129, 0.5);
             --accent-cyan: #06b6d4;
-            --accent-cyan-glow: rgba(6, 182, 212, 0.5);
             --accent-purple: #a855f7;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
@@ -23,278 +21,195 @@
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            padding: 20px 15px;
-            max-width: 500px;
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 16px;
+            max-width: 480px;
             margin: 0 auto;
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        /* Animated Canvas BG */
-        #bgCanvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            z-index: -1;
-            pointer-events: none;
         }
 
         header {
             text-align: center;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
         header h1 {
-            background: linear-gradient(135deg, #10b981 0%, #38bdf8 50%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: 2px;
+            color: var(--primary-green);
+            font-size: 24px;
+            font-weight: 800;
             text-transform: uppercase;
-            filter: drop-shadow(0 0 12px var(--primary-green-glow));
+            letter-spacing: 1px;
         }
-        header p { 
-            color: var(--text-muted); 
-            font-size: 13px; 
-            margin-top: 4px;
-            letter-spacing: 0.5px;
-        }
+        header p { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
 
-        /* Glassmorphic Tabs */
+        /* Navigation Tabs */
         .tab-menu {
             display: flex;
             gap: 6px;
-            margin-bottom: 20px;
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(16px);
-            padding: 6px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 16px;
+            background: #111827;
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
         }
         .tab-btn {
             flex: 1;
-            padding: 12px 4px;
+            padding: 10px 2px;
             border: none;
             background: transparent;
             color: var(--text-muted);
-            font-weight: 800;
+            font-weight: 700;
             font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-radius: 12px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.25s ease;
         }
         .tab-btn.active {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: #021a12;
-            box-shadow: 0 0 18px var(--primary-green-glow);
+            background: var(--primary-green);
+            color: #000;
         }
 
         .tab-content { display: none; }
-        .tab-content.active { 
-            display: block; 
-            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        .tab-content.active { display: block; }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Glass Cards */
+        /* Cards & Form Elements */
         .card {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
             border: 1px solid var(--card-border);
-            border-radius: 18px;
-            padding: 20px;
-            margin-bottom: 15px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
         }
         .card h2 {
-            font-size: 17px;
+            font-size: 15px;
             color: var(--accent-cyan);
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 800;
-            text-shadow: 0 0 10px var(--accent-cyan-glow);
+            margin-bottom: 12px;
+            font-weight: 700;
         }
 
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
         
         label { 
             display: block; 
-            font-size: 11px; 
+            font-size: 10px; 
             font-weight: 700;
             color: var(--text-muted); 
             text-transform: uppercase;
-            margin-bottom: 6px; 
+            margin-bottom: 4px; 
         }
 
         input, select {
             width: 100%;
-            padding: 12px;
-            background: rgba(4, 7, 13, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 10px;
+            padding: 10px;
+            background: #090d16;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
             color: var(--text-main);
             font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             outline: none;
-            transition: all 0.2s ease;
-        }
-        input:focus, select:focus { 
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 12px var(--accent-cyan-glow);
         }
 
         .btn-action {
             width: 100%;
-            background: linear-gradient(135deg, #10b981 0%, #047857 100%);
-            color: #ffffff;
+            background: var(--primary-green);
+            color: #000;
             border: none;
-            padding: 14px;
-            border-radius: 12px;
+            padding: 12px;
+            border-radius: 8px;
             font-weight: 800;
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
             cursor: pointer;
-            margin-top: 8px;
-            box-shadow: 0 5px 20px var(--primary-green-glow);
-            transition: all 0.2s ease;
+            margin-top: 4px;
         }
-        .btn-action:active { transform: scale(0.97); }
 
-        /* Output Boxes */
         .output-box {
-            background: rgba(4, 7, 13, 0.85);
+            background: #090d16;
             border: 1px solid var(--accent-cyan);
-            border-radius: 12px;
-            padding: 14px;
-            margin-top: 12px;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
             text-align: center;
-            box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.15);
         }
-        .output-title { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .output-title { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
         .output-value { 
-            font-size: 18px; 
+            font-size: 16px; 
             font-weight: 800; 
             color: var(--accent-cyan); 
-            margin-top: 4px; 
-            word-break: break-all;
-            text-shadow: 0 0 10px var(--accent-cyan-glow);
+            margin-top: 2px;
         }
         
         .code-block {
-            background: #020408;
-            border: 1px solid rgba(16, 185, 129, 0.4);
-            border-radius: 10px;
-            padding: 12px;
-            font-family: 'Courier New', monospace;
+            background: #000;
+            border: 1px solid var(--primary-green);
+            border-radius: 8px;
+            padding: 10px;
+            font-family: monospace;
             font-size: 11px;
             color: #a7f3d0;
             word-break: break-all;
-            margin-top: 10px;
-            max-height: 100px;
-            overflow-y: auto;
+            margin-top: 8px;
         }
 
-        /* Saved Waypoints List */
         .waypoint-item {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            padding: 10px 12px;
-            margin-top: 8px;
+            background: #090d16;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin-top: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .wp-info { font-size: 12px; }
-        .wp-title { font-weight: bold; color: var(--primary-green); }
-        .wp-coords { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+        .wp-title { font-weight: bold; color: var(--primary-green); font-size: 12px; }
+        .wp-coords { font-size: 11px; color: var(--text-muted); }
         .btn-del {
             background: rgba(239, 68, 68, 0.2);
             color: #ef4444;
-            border: 1px solid rgba(239, 68, 68, 0.4);
+            border: 1px solid #ef4444;
             padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
+            border-radius: 4px;
+            font-size: 10px;
             cursor: pointer;
-        }
-
-        /* Floating Toast Notification */
-        #toast {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #10b981;
-            color: #021a12;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: 800;
-            font-size: 12px;
-            letter-spacing: 0.5px;
-            box-shadow: 0 0 20px var(--primary-green-glow);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 9999;
-            opacity: 0;
-            pointer-events: none;
-        }
-        #toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
         }
     </style>
 </head>
 <body>
 
-    <canvas id="bgCanvas"></canvas>
-
     <header>
         <h1>Minecraft Vault ⚡</h1>
-        <p>God Edition Companion Suite</p>
+        <p>Companion Tool Suite</p>
     </header>
 
     <!-- Navigation Tabs -->
     <div class="tab-menu">
-        <button class="tab-btn active" onclick="switchTab(this, 'portal')">🌌 Nether</button>
-        <button class="tab-btn" onclick="switchTab(this, 'distance')">📏 3D Dist</button>
-        <button class="tab-btn" onclick="switchTab(this, 'commands')">⚔️ Commands</button>
-        <button class="tab-btn" onclick="switchTab(this, 'waypoints')">📌 Saved</button>
+        <button class="tab-btn active" data-tab="portal">🌌 Nether</button>
+        <button class="tab-btn" data-tab="distance">📏 Distance</button>
+        <button class="tab-btn" data-tab="commands">⚔️ Commands</button>
+        <button class="tab-btn" data-tab="waypoints">📌 Saved</button>
     </div>
 
-    <!-- TAB 1: NETHER PORTAL CONVERTER -->
+    <!-- TAB 1: NETHER PORTAL -->
     <div id="tab-portal" class="tab-content active">
         <div class="card">
             <h2>🌌 Nether Portal Calc</h2>
             <label>Mode Select Karo:</label>
-            <select id="portalMode" onchange="calcPortal()">
-                <option value="o2n">Overworld ➔ Nether (Divide by 8)</option>
-                <option value="n2o">Nether ➔ Overworld (Multiply by 8)</option>
+            <select id="portalMode">
+                <option value="o2n">Overworld ➔ Nether (/ 8)</option>
+                <option value="n2o">Nether ➔ Overworld (* 8)</option>
             </select>
 
             <div class="grid-3">
                 <div>
                     <label>X Coord</label>
-                    <input type="number" id="px" value="800" oninput="calcPortal()">
+                    <input type="number" id="px" value="800">
                 </div>
                 <div>
                     <label>Y (Height)</label>
-                    <input type="number" id="py" value="64" oninput="calcPortal()">
+                    <input type="number" id="py" value="64">
                 </div>
                 <div>
                     <label>Z Coord</label>
-                    <input type="number" id="pz" value="-1200" oninput="calcPortal()">
+                    <input type="number" id="pz" value="-1200">
                 </div>
             </div>
 
@@ -303,142 +218,97 @@
                 <div class="output-value" id="portalResult">X: 100, Y: 64, Z: -150</div>
             </div>
 
-            <!-- Quick Save Waypoint Button -->
-            <input type="text" id="wpNameInput" placeholder="Base/Portal Name (e.g. Main Base)" style="margin-top:12px; margin-bottom:8px;">
-            <button class="btn-action" onclick="saveCurrentWaypoint()">📌 Save This Waypoint</button>
+            <input type="text" id="wpNameInput" placeholder="Base Name (e.g. Main Base)" style="margin-top:10px; margin-bottom:6px;">
+            <button class="btn-action" id="btnSaveWp">📌 Save Waypoint</button>
         </div>
     </div>
 
-    <!-- TAB 2: DISTANCE & CHUNK CALCULATOR -->
+    <!-- TAB 2: DISTANCE -->
     <div id="tab-distance" class="tab-content">
         <div class="card">
-            <h2>📏 3D Distance & Chunk Info</h2>
-            
-            <label>Point A (Base 1):</label>
+            <h2>📏 3D Distance Calc</h2>
+            <label>Point A:</label>
             <div class="grid-3">
-                <input type="number" id="aX" placeholder="X" value="0" oninput="calcDistance()">
-                <input type="number" id="aY" placeholder="Y" value="64" oninput="calcDistance()">
-                <input type="number" id="aZ" placeholder="Z" value="0" oninput="calcDistance()">
+                <input type="number" id="aX" placeholder="X" value="0">
+                <input type="number" id="aY" placeholder="Y" value="64">
+                <input type="number" id="aZ" placeholder="Z" value="0">
             </div>
 
-            <label>Point B (Base 2):</label>
+            <label>Point B:</label>
             <div class="grid-3">
-                <input type="number" id="bX" placeholder="X" value="300" oninput="calcDistance()">
-                <input type="number" id="bY" placeholder="Y" value="70" oninput="calcDistance()">
-                <input type="number" id="bZ" placeholder="Z" value="400" oninput="calcDistance()">
+                <input type="number" id="bX" placeholder="X" value="300">
+                <input type="number" id="bY" placeholder="Y" value="70">
+                <input type="number" id="bZ" placeholder="Z" value="400">
             </div>
 
             <div class="output-box">
-                <div class="output-title">3D Euclidean Distance</div>
+                <div class="output-title">3D Distance</div>
                 <div class="output-value" id="distanceResult">500.04 Blocks</div>
             </div>
 
-            <div class="output-box" style="margin-top:8px; border-color: var(--accent-purple);">
-                <div class="output-title" style="color:var(--accent-purple);">Point B Chunk Coordinates</div>
-                <div class="output-value" id="chunkResult" style="color:var(--accent-purple); font-size:15px;">Chunk X: 18, Chunk Z: 25</div>
+            <div class="output-box" style="margin-top:6px;">
+                <div class="output-title">Point B Chunk</div>
+                <div class="output-value" id="chunkResult" style="font-size:14px;">Chunk X: 18, Chunk Z: 25</div>
             </div>
         </div>
     </div>
 
-    <!-- TAB 3: OP COMMAND & EFFECT GENERATOR -->
+    <!-- TAB 3: COMMANDS -->
     <div id="tab-commands" class="tab-content">
         <div class="card">
-            <h2>⚔️ OP Item & Effect Generator</h2>
-            
-            <label>Category:</label>
-            <select id="cmdCategory" onchange="toggleCmdCategory()">
-                <option value="items">God Level Items (Lvl 255)</option>
-                <option value="effects">Custom Effects & Buffs</option>
+            <h2>⚔️ Command Generator</h2>
+            <label>Item Type:</label>
+            <select id="itemSelect">
+                <option value="netherite_sword">Netherite Sword 🗡️</option>
+                <option value="netherite_pickaxe">Netherite Pickaxe ⛏️</option>
+                <option value="netherite_chestplate">God Chestplate 🛡️</option>
+                <option value="trident">OP Trident 🔱</option>
+                <option value="bow">God Bow 🏹</option>
             </select>
 
-            <!-- ITEM CONTROLS -->
-            <div id="itemControls">
-                <label>Item Type:</label>
-                <select id="itemSelect" onchange="generateCommand()">
-                    <option value="netherite_sword">Netherite Sword 🗡️</option>
-                    <option value="netherite_pickaxe">Netherite Pickaxe ⛏️</option>
-                    <option value="netherite_chestplate">God Chestplate 🛡️</option>
-                    <option value="trident">OP Trident 🔱</option>
-                    <option value="bow">God Bow 🏹</option>
-                    <option value="elytra">Unbreakable Elytra 🕊️</option>
-                </select>
+            <label>Custom Name:</label>
+            <input type="text" id="itemName" value="Glacier God Blade">
 
-                <label>Custom Name:</label>
-                <input type="text" id="itemName" value="Glacier God Blade" oninput="generateCommand()">
-
-                <label>Enchantment Level:</label>
-                <select id="enchLevel" onchange="generateCommand()">
-                    <option value="255">Level 255 (MAX GOD)</option>
-                    <option value="100">Level 100</option>
-                    <option value="10">Level 10</option>
-                </select>
-            </div>
-
-            <!-- EFFECT CONTROLS -->
-            <div id="effectControls" style="display:none;">
-                <label>Effect Type:</label>
-                <select id="effectSelect" onchange="generateCommand()">
-                    <option value="strength">Infinite Strength 💪</option>
-                    <option value="regeneration">God Regeneration ❤️</option>
-                    <option value="speed">Super Speed ⚡</option>
-                    <option value="night_vision">Night Vision 👁️</option>
-                    <option value="resistance">Invincibility (Resistance 255) 🛡️</option>
-                </select>
-            </div>
+            <label>Enchantment Level:</label>
+            <select id="enchLevel">
+                <option value="255">Level 255 (MAX)</option>
+                <option value="100">Level 100</option>
+                <option value="10">Level 10</option>
+            </select>
 
             <div class="code-block" id="commandOutput">/give @p netherite_sword...</div>
-            <button class="btn-action" onclick="copyCommand()">📋 Copy Command</button>
+            <button class="btn-action" id="btnCopyCmd">📋 Copy Command</button>
         </div>
     </div>
 
-    <!-- TAB 4: SAVED WAYPOINTS -->
+    <!-- TAB 4: SAVED -->
     <div id="tab-waypoints" class="tab-content">
         <div class="card">
-            <h2>📌 Saved Coordinates Vault</h2>
+            <h2>📌 Saved Coordinates</h2>
             <div id="waypointsList"></div>
         </div>
     </div>
 
-    <div id="toast">📋 COPIED TO CLIPBOARD!</div>
-
     <script>
-        // Web Audio Synth SFX Generator
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playBeep(freq = 600, duration = 0.08) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + duration);
-        }
+        // Tab switching logic (Event Listener Based)
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
 
-        // Tab Switcher
-        function switchTab(btn, tabName) {
-            playBeep(800, 0.06);
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById('tab-' + tabName).classList.add('active');
-            btn.classList.add('active');
-            if (tabName === 'waypoints') renderWaypoints();
-        }
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.getAttribute('data-tab');
 
-        // Toast Popup
-        function showToast(msg) {
-            playBeep(1200, 0.12);
-            const toast = document.getElementById("toast");
-            toast.innerText = msg;
-            toast.classList.add("show");
-            setTimeout(() => toast.classList.remove("show"), 2000);
-        }
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
 
-        // Nether Portal Calculation
+                btn.classList.add('active');
+                document.getElementById('tab-' + targetTab).classList.add('active');
+
+                if(targetTab === 'waypoints') renderWaypoints();
+            });
+        });
+
+        // Nether Portal
         function calcPortal() {
             const mode = document.getElementById('portalMode').value;
             const x = parseFloat(document.getElementById('px').value) || 0;
@@ -452,7 +322,12 @@
             document.getElementById('portalResult').innerText = `X: ${rx}, Y: ${y}, Z: ${rz}`;
         }
 
-        // Distance & Chunk Calculation
+        ['portalMode', 'px', 'py', 'pz'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calcPortal);
+            document.getElementById(id).addEventListener('change', calcPortal);
+        });
+
+        // Distance
         function calcDistance() {
             const ax = parseFloat(document.getElementById('aX').value) || 0;
             const ay = parseFloat(document.getElementById('aY').value) || 0;
@@ -465,42 +340,79 @@
             const dist = Math.sqrt(Math.pow(bx - ax, 2) + Math.pow(by - ay, 2) + Math.pow(bz - az, 2));
             document.getElementById('distanceResult').innerText = `${dist.toFixed(2)} Blocks`;
 
-            // Chunk calculation
-            const chunkX = Math.floor(bx / 16);
-            const chunkZ = Math.floor(bz / 16);
-            document.getElementById('chunkResult').innerText = `Chunk X: ${chunkX}, Chunk Z: ${chunkZ}`;
+            document.getElementById('chunkResult').innerText = `Chunk X: ${Math.floor(bx / 16)}, Chunk Z: ${Math.floor(bz / 16)}`;
         }
 
-        // Category Switcher
-        function toggleCmdCategory() {
-            playBeep(700, 0.05);
-            const cat = document.getElementById('cmdCategory').value;
-            document.getElementById('itemControls').style.display = (cat === 'items') ? 'block' : 'none';
-            document.getElementById('effectControls').style.display = (cat === 'effects') ? 'block' : 'none';
-            generateCommand();
-        }
+        ['aX', 'aY', 'aZ', 'bX', 'bY', 'bZ'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calcDistance);
+        });
 
-        // Command Generator
+        // Commands
         function generateCommand() {
-            const cat = document.getElementById('cmdCategory').value;
-            let cmd = "";
+            const item = document.getElementById('itemSelect').value;
+            const name = document.getElementById('itemName').value || "God Item";
+            const lvl = document.getElementById('enchLevel').value;
 
-            if (cat === 'items') {
-                const item = document.getElementById('itemSelect').value;
-                const name = document.getElementById('itemName').value || "God Item";
-                const lvl = document.getElementById('enchLevel').value;
+            let enchants = `{id:"sharpness",lvl:${lvl}s},{id:"unbreaking",lvl:${lvl}s}`;
+            if (item.includes("pickaxe")) enchants = `{id:"efficiency",lvl:${lvl}s},{id:"unbreaking",lvl:${lvl}s}`;
+            if (item.includes("chestplate")) enchants = `{id:"protection",lvl:${lvl}s},{id:"unbreaking",lvl:${lvl}s}`;
 
-                let enchants = "";
-                if (item.includes("sword")) {
-                    enchants = `{id:"sharpness",lvl:${lvl}s},{id:"unbreaking",lvl:${lvl}s},{id:"fire_aspect",lvl:${lvl}s},{id:"looting",lvl:${lvl}s}`;
-                } else if (item.includes("pickaxe")) {
-                    enchants = `{id:"efficiency",lvl:${lvl}s},{id:"unbreaking",lvl:${lvl}s},{id:"fortune",lvl:${lvl}s}`;
-                } else if (item.includes("chestplate")) {
-                    enchants = `{id:"protection",lvl:${lvl}s},{id:"unbreaking",lvl:${lvl}s},{id:"thorns",lvl:${lvl}s}`;
-                } else if (item.includes("trident")) {
-                    enchants = `{id:"loyalty",lvl:3s},{id:"impaling",lvl:${lvl}s},{id:"unbreaking",lvl:${lvl}s}`;
-                } else if (item.includes("elytra")) {
-                    enchants = `{id:"unbreaking",lvl:${lvl}s},{id:"mending",lvl:1s}`;
-                } else {
-                    enchants = `{id:"power",lvl:${lvl}s},{id:"unbreaking",lvl:${lvl}s},{id:"flame",lvl:${lvl}s},{id:"infinity",lvl:1s}`;
-       
+            const cmd = `/give @p ${item}{CustomName:'{"text":"${name}","color":"gold"}',Enchantments:[${enchants}],Unbreakable:1b} 1`;
+            document.getElementById('commandOutput').innerText = cmd;
+        }
+
+        ['itemSelect', 'itemName', 'enchLevel'].forEach(id => {
+            document.getElementById(id).addEventListener('input', generateCommand);
+            document.getElementById(id).addEventListener('change', generateCommand);
+        });
+
+        document.getElementById('btnCopyCmd').addEventListener('click', () => {
+            const cmd = document.getElementById('commandOutput').innerText;
+            navigator.clipboard.writeText(cmd);
+            alert("Command Copied!");
+        });
+
+        // Waypoints
+        let waypoints = JSON.parse(localStorage.getItem('mc_wp_simple')) || [];
+
+        document.getElementById('btnSaveWp').addEventListener('click', () => {
+            const name = document.getElementById('wpNameInput').value.trim() || "Saved Base";
+            const coords = document.getElementById('portalResult').innerText;
+
+            waypoints.unshift({ id: Date.now(), name: name, coords: coords });
+            localStorage.setItem('mc_wp_simple', JSON.stringify(waypoints));
+            document.getElementById('wpNameInput').value = "";
+            alert("Waypoint Saved!");
+        });
+
+        function renderWaypoints() {
+            const list = document.getElementById('waypointsList');
+            if (waypoints.length === 0) {
+                list.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:11px;">Koi waypoint saved nahi hai.</p>`;
+                return;
+            }
+
+            list.innerHTML = waypoints.map(w => `
+                <div class="waypoint-item">
+                    <div>
+                        <div class="wp-title">${w.name}</div>
+                        <div class="wp-coords">${w.coords}</div>
+                    </div>
+                    <button class="btn-del" onclick="deleteWaypoint(${w.id})">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        window.deleteWaypoint = function(id) {
+            waypoints = waypoints.filter(w => w.id !== id);
+            localStorage.setItem('mc_wp_simple', JSON.stringify(waypoints));
+            renderWaypoints();
+        };
+
+        // Initialize
+        calcPortal();
+        calcDistance();
+        generateCommand();
+    </script>
+</body>
+</html>
