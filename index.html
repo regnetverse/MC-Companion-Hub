@@ -43,7 +43,7 @@
         /* Navigation Tabs */
         .tab-menu {
             display: flex;
-            gap: 6px;
+            gap: 4px;
             margin-bottom: 16px;
             background: #111827;
             padding: 4px;
@@ -57,7 +57,7 @@
             background: transparent;
             color: var(--text-muted);
             font-weight: 700;
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
             border-radius: 8px;
             cursor: pointer;
@@ -85,6 +85,7 @@
             font-weight: 700;
         }
 
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
         
         label { 
@@ -171,6 +172,27 @@
             font-size: 10px;
             cursor: pointer;
         }
+
+        /* XP List Stats */
+        .xp-stat-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .xp-stat-item {
+            background: #090d16;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+        }
+        .xp-stat-item span:last-child {
+            color: var(--primary-green);
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -183,8 +205,9 @@
     <!-- Navigation Tabs -->
     <div class="tab-menu">
         <button class="tab-btn active" data-tab="portal">🌌 Nether</button>
-        <button class="tab-btn" data-tab="distance">📏 Distance</button>
-        <button class="tab-btn" data-tab="commands">⚔️ Commands</button>
+        <button class="tab-btn" data-tab="distance">📏 3D Dist</button>
+        <button class="tab-btn" data-tab="xp">🔮 XP Calc</button>
+        <button class="tab-btn" data-tab="commands">⚔️ Cmds</button>
         <button class="tab-btn" data-tab="waypoints">📌 Saved</button>
     </div>
 
@@ -253,7 +276,48 @@
         </div>
     </div>
 
-    <!-- TAB 3: COMMANDS -->
+    <!-- TAB 3: XP CALCULATOR -->
+    <div id="tab-xp" class="tab-content">
+        <div class="card">
+            <h2>🔮 XP & Level Calculator</h2>
+            <div class="grid-2">
+                <div>
+                    <label>Current Level</label>
+                    <input type="number" id="xpCurrent" value="0" min="0">
+                </div>
+                <div>
+                    <label>Target Level</label>
+                    <input type="number" id="xpTarget" value="30" min="1">
+                </div>
+            </div>
+
+            <div class="output-box" style="border-color: var(--accent-purple);">
+                <div class="output-title" style="color: var(--accent-purple);">Required XP Points</div>
+                <div class="output-value" id="xpRequiredResult" style="color: var(--accent-purple);">1,395 XP</div>
+            </div>
+
+            <div class="xp-stat-list">
+                <div class="xp-stat-item">
+                    <span>Endermen Kills (5 XP/mob):</span>
+                    <span id="xpEndermen">279</span>
+                </div>
+                <div class="xp-stat-item">
+                    <span>Blazes / Piglins (10 XP/mob):</span>
+                    <span id="xpBlazes">140</span>
+                </div>
+                <div class="xp-stat-item">
+                    <span>Overworld Mobs (5 XP/mob):</span>
+                    <span id="xpMobs">279</span>
+                </div>
+                <div class="xp-stat-item">
+                    <span>Quartz Ores Mined (~3.5 XP):</span>
+                    <span id="xpQuartz">399</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 4: COMMANDS -->
     <div id="tab-commands" class="tab-content">
         <div class="card">
             <h2>⚔️ Command Generator</h2>
@@ -281,7 +345,7 @@
         </div>
     </div>
 
-    <!-- TAB 4: SAVED -->
+    <!-- TAB 5: SAVED -->
     <div id="tab-waypoints" class="tab-content">
         <div class="card">
             <h2>📌 Saved Coordinates</h2>
@@ -290,7 +354,7 @@
     </div>
 
     <script>
-        // Tab switching logic (Event Listener Based)
+        // Tab switching logic
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
 
@@ -345,6 +409,42 @@
 
         ['aX', 'aY', 'aZ', 'bX', 'bY', 'bZ'].forEach(id => {
             document.getElementById(id).addEventListener('input', calcDistance);
+        });
+
+        // XP Calculator Logic
+        function totalXpForLevel(lvl) {
+            if (lvl <= 0) return 0;
+            if (lvl <= 16) return Math.pow(lvl, 2) + (6 * lvl);
+            if (lvl <= 31) return (2.5 * Math.pow(lvl, 2)) - (40.5 * lvl) + 360;
+            return (4.5 * Math.pow(lvl, 2)) - (162.5 * lvl) + 2220;
+        }
+
+        function calcXP() {
+            const currentLvl = parseInt(document.getElementById('xpCurrent').value) || 0;
+            const targetLvl = parseInt(document.getElementById('xpTarget').value) || 0;
+
+            if (targetLvl <= currentLvl) {
+                document.getElementById('xpRequiredResult').innerText = "0 XP";
+                document.getElementById('xpEndermen').innerText = "0";
+                document.getElementById('xpBlazes').innerText = "0";
+                document.getElementById('xpMobs').innerText = "0";
+                document.getElementById('xpQuartz').innerText = "0";
+                return;
+            }
+
+            const currentXP = totalXpForLevel(currentLvl);
+            const targetXP = totalXpForLevel(targetLvl);
+            const reqXP = Math.ceil(targetXP - currentXP);
+
+            document.getElementById('xpRequiredResult').innerText = `${reqXP.toLocaleString()} XP`;
+            document.getElementById('xpEndermen').innerText = Math.ceil(reqXP / 5).toLocaleString();
+            document.getElementById('xpBlazes').innerText = Math.ceil(reqXP / 10).toLocaleString();
+            document.getElementById('xpMobs').innerText = Math.ceil(reqXP / 5).toLocaleString();
+            document.getElementById('xpQuartz').innerText = Math.ceil(reqXP / 3.5).toLocaleString();
+        }
+
+        ['xpCurrent', 'xpTarget'].forEach(id => {
+            document.getElementById(id).addEventListener('input', calcXP);
         });
 
         // Commands
@@ -412,7 +512,9 @@
         // Initialize
         calcPortal();
         calcDistance();
+        calcXP();
         generateCommand();
     </script>
 </body>
 </html>
+
